@@ -10,6 +10,15 @@ make simulate                                    # -> data_sim/phecode/
 make pipeline-sim                                # -> scratch/sim_run/phecode/output/dx/
 ```
 
+On **Windows** (no bash/make needed — plain PowerShell), simulate straight
+into `data/` and run the pipeline in place:
+
+```sh
+Rscript -e "renv::restore(prompt = FALSE)"
+Rscript scripts/simulate_data.R --preset phecode --out data --force
+Rscript -e "targets::tar_make()"                 # -> output/dx/
+```
+
 Presets (`make simulate SIM_PRESET=...`):
 
 | preset | gold graph | expectation |
