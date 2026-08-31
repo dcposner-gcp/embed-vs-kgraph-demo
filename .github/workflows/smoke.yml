@@ -4,10 +4,13 @@
 # "fresh clone" mode documented in scripts/simulate_data.R (--out data),
 # which needs no bash/symlinks/make and therefore also runs on Windows.
 #
-# RENV_CONFIG_REPOS_OVERRIDE: the lockfile records the platform-neutral PPM
-# URL, which serves mac/windows binaries but only *source* on Linux; the
-# ubuntu job overrides to the noble binary path so restore takes minutes,
-# not an hour of compilation.
+# RENV_CONFIG_REPOS_OVERRIDE pins the DATED PPM snapshot 2026-06-02 (the day
+# after renv.lock was written), where every pinned version was CRAN-current —
+# so mac/windows/linux all get prebuilt binaries. The lockfile's own
+# "latest" URL drifts: mac/windows binaries exist only for current CRAN
+# versions, so pinned-but-superseded packages (e.g. data.table) fall back to
+# source builds that fail on the runners. Linux additionally needs the
+# __linux__/noble path for binaries at all.
 name: smoke
 
 on:
@@ -25,11 +28,11 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            repos: https://packagemanager.posit.co/cran/__linux__/noble/latest
+            repos: https://packagemanager.posit.co/cran/__linux__/noble/2026-06-02
           - os: macos-latest
-            repos: https://packagemanager.posit.co/cran/latest
+            repos: https://packagemanager.posit.co/cran/2026-06-02
           - os: windows-latest
-            repos: https://packagemanager.posit.co/cran/latest
+            repos: https://packagemanager.posit.co/cran/2026-06-02
     env:
       RENV_CONFIG_REPOS_OVERRIDE: ${{ matrix.repos }}
     defaults:
