@@ -1,0 +1,18 @@
+# simulated data + run artifacts (regenerable from the seed)
+data_sim/
+data/
+scratch/
+output/
+_targets/
+
+# renv — keep renv.lock, activate.R, settings.json; ignore the library
+renv/library/
+renv/staging/
+renv/local/
+renv/cellar/
+
+# R / editor cruft
+.Rproj.user/
+.Rhistory
+.RData
+.DS_Store

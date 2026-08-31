@@ -1,0 +1,12 @@
+# ============================================================================
+# Project .Renviron
+# Read by R at startup (BEFORE .Rprofile). Variables defined here are
+# visible to any process spawned by R, including pak's worker subprocesses.
+# ============================================================================
+
+# Use the locked snapshot strictly — don't auto-snapshot or sandbox shuffle.
+RENV_CONFIG_AUTO_SNAPSHOT=FALSE
+RENV_CONFIG_SANDBOX_ENABLED=FALSE
+
+# Compiler flags for any source builds (rare, since we prefer PPM binaries).
+MAKEFLAGS=-j4
