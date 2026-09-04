@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 990 530" width="990" height="530" font-family="Helvetica, Arial, sans-serif">
+  <title>Clinical Concept Retrieval: clinical knowledge graph vs dense AI embedding</title>
+  <!-- Script-drawn SVG (a python script places every element; there is no hand layout to preserve
+       beyond the coordinates below). Panel B's density is schematic, after a sparse clinical
+       knowledge graph; panels B and C concepts and cosine values are schematic - no real
+       embedding vectors or patient data. -->
+  <rect width="990" height="530" fill="#ffffff"/>
+  <defs>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b7bb9"/>
+    </marker>
+    <marker id="arr-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b0588f"/>
+    </marker>
+    <marker id="arr-ray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b0588f"/>
+    </marker>
+  </defs>
+  <text x="495" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#222222">Clinical Concept Retrieval</text>
+  <text x="495" y="56" text-anchor="middle" font-size="13" fill="#555555">Clinical knowledge graph vs Dense AI embedding</text>
+
+  <!-- ===================== A: the query ===================== -->
+  <rect x="30" y="262" width="190" height="56" rx="10" fill="#eef3f8" stroke="#666666" stroke-width="1.2"/>
+  <text x="125" y="285" text-anchor="middle" font-size="12" font-weight="bold" fill="#222222">A &#183; Clinical concept query</text>
+  <text x="125" y="303" text-anchor="middle" font-size="11" font-style="italic" fill="#222222">&#8220;type 2 diabetes (T2D)&#8221;</text>
+
+  <!-- ===================== the two outbound arrows ===================== -->
+  <path d="M220,290 C280,290 280,180 340,180" fill="none" stroke="#2b7bb9" stroke-width="2" marker-end="url(#arr-green)"/>
+  <path d="M220,290 C280,290 280,400 340,400" fill="none" stroke="#b0588f" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <rect x="228" y="221" width="104" height="28" rx="6" fill="#ffffff" stroke="#2b7bb9" stroke-width="0.8"/>
+  <text x="280" y="233" text-anchor="middle" font-size="9" fill="#1a5e8f">look up</text>
+  <text x="280" y="244" text-anchor="middle" font-size="9" fill="#1a5e8f">validated edges</text>
+  <rect x="228" y="331" width="104" height="28" rx="6" fill="#ffffff" stroke="#b0588f" stroke-width="0.8"/>
+  <text x="280" y="343" text-anchor="middle" font-size="9" fill="#8a3a6c">score its similarity</text>
+  <text x="280" y="354" text-anchor="middle" font-size="9" fill="#8a3a6c">to every concept</text>
+
+  <!-- ===================== B: sparse knowledge graph ===================== -->
+  <rect x="340" y="80" width="620" height="200" rx="12" fill="#e9f2fa" stroke="#2b7bb9" stroke-width="1.4"/>
+  <text x="358" y="106" font-size="13" font-weight="bold" fill="#1a5e8f">B &#183; Clinical knowledge graph (KG) &#8212; fewer edges, but all scientifically validated</text>
+  <rect x="840" y="250" width="108" height="18" rx="9" fill="#d5e6f5"/>
+  <text x="894" y="263" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a5e8f">THE ANSWER KEY</text>
+  <!-- edges: solid = clinically or statistically validated -->
+  <g stroke="#2b7bb9" stroke-width="2.2" fill="none">
+    <line x1="440" y1="193" x2="530" y2="148"/>   <!-- T2D - CAD -->
+    <line x1="440" y1="193" x2="455" y2="243"/>   <!-- T2D - CKD -->
+    <line x1="440" y1="193" x2="535" y2="240"/>   <!-- T2D - Obes. -->
+    <line x1="530" y1="148" x2="620" y2="138"/>   <!-- CAD - MI -->
+    <line x1="530" y1="148" x2="605" y2="223"/>   <!-- CAD - HF -->
+    <line x1="620" y1="138" x2="605" y2="223"/>   <!-- MI - HF -->
+    <line x1="730" y1="163" x2="710" y2="238"/>   <!-- Depr. - RA -->
+  </g>
+  <!-- concepts; the query is the filled node, caption outside (as in C) -->
+  <g font-size="9.5" fill="#222222" text-anchor="middle">
+    <circle cx="440" cy="193" r="15" fill="#2b7bb9"/>
+    <text x="420" y="197" text-anchor="end" font-weight="bold" fill="#1a5e8f">T2D (query)</text>
+    <circle cx="530" cy="148" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="530" y="151.5">CAD</text>
+    <circle cx="620" cy="138" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="620" y="141.5">MI</text>
+    <circle cx="605" cy="223" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="605" y="226.5">HF</text>
+    <circle cx="455" cy="243" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="455" y="246.5">CKD</text>
+    <circle cx="535" cy="240" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="535" y="243.5">Obes.</text>
+    <circle cx="730" cy="163" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="730" y="166.5">Depr.</text>
+    <circle cx="710" cy="238" r="15" fill="#ffffff" stroke="#2b7bb9" stroke-width="2"/><text x="710" y="241.5">RA</text>
+  </g>
+  <!-- right column -->
+  <line x1="800" y1="188" x2="828" y2="188" stroke="#2b7bb9" stroke-width="2.2"/>
+  <text x="834" y="192" font-size="10" fill="#333333">validated edge</text>
+  <text x="834" y="205" font-size="9" fill="#666666">clinical or statistical</text>
+
+  <!-- ===================== C: dense embedding ===================== -->
+  <rect x="340" y="300" width="620" height="200" rx="12" fill="#f9eef5" stroke="#b0588f" stroke-width="1.4"/>
+  <text x="358" y="326" font-size="13" font-weight="bold" fill="#8a3a6c">C &#183; Dense AI embedding &#8212; many edges between &#8220;related&#8221; concepts</text>
+  <rect x="856" y="310" width="92" height="18" rx="9" fill="#f0d8e6"/>
+  <text x="902" y="323" text-anchor="middle" font-size="9" font-weight="bold" fill="#8a3a6c">MODEL TESTED</text>
+  <!-- axes -->
+  <g stroke="#dcc0d0" stroke-width="1"><line x1="362.0" y1="471" x2="687.6" y2="471"/><line x1="362.0" y1="471" x2="362.0" y2="340"/></g>
+  <text x="366.4" y="350" font-size="9" fill="#777777">vector space (2 of d dimensions shown)</text>
+  <!-- every pair has a score: faint edges among the non-query concepts -->
+  <g stroke="#e0bdd2" stroke-width="0.8" stroke-opacity="0.5">
+    <line x1="497.4" y1="360" x2="387.9" y2="402"/>
+    <line x1="497.4" y1="360" x2="470.8" y2="456"/>
+    <line x1="497.4" y1="360" x2="549.2" y2="388"/>
+    <line x1="497.4" y1="360" x2="532.9" y2="448"/>
+    <line x1="497.4" y1="360" x2="578.8" y2="346"/>
+    <line x1="497.4" y1="360" x2="644.7" y2="453"/>
+    <line x1="387.9" y1="402" x2="470.8" y2="456"/>
+    <line x1="387.9" y1="402" x2="549.2" y2="388"/>
+    <line x1="387.9" y1="402" x2="532.9" y2="448"/>
+    <line x1="387.9" y1="402" x2="578.8" y2="346"/>
+    <line x1="387.9" y1="402" x2="644.7" y2="453"/>
+    <line x1="470.8" y1="456" x2="549.2" y2="388"/>
+    <line x1="470.8" y1="456" x2="532.9" y2="448"/>
+    <line x1="470.8" y1="456" x2="578.8" y2="346"/>
+    <line x1="470.8" y1="456" x2="644.7" y2="453"/>
+    <line x1="549.2" y1="388" x2="532.9" y2="448"/>
+    <line x1="549.2" y1="388" x2="578.8" y2="346"/>
+    <line x1="549.2" y1="388" x2="644.7" y2="453"/>
+    <line x1="532.9" y1="448" x2="578.8" y2="346"/>
+    <line x1="532.9" y1="448" x2="644.7" y2="453"/>
+    <line x1="578.8" y1="346" x2="644.7" y2="453"/>
+  </g>
+  <!-- the query's rays, with cosine similarity -->
+  <g stroke="#b0588f" stroke-width="1.4" stroke-opacity="0.8" fill="none" marker-end="url(#arr-ray)">
+    <line x1="439.7" y1="414" x2="490.1" y2="366.8"/>   <!-- CAD -->
+    <line x1="439.7" y1="414" x2="397.6" y2="404.3"/>   <!-- CKD -->
+    <line x1="439.7" y1="414" x2="464.8" y2="448.0"/>   <!-- Obes. -->
+    <line x1="439.7" y1="414" x2="539.5" y2="390.3"/>   <!-- MI -->
+    <line x1="439.7" y1="414" x2="523.5" y2="444.6"/>   <!-- HF -->
+    <line x1="439.7" y1="414" x2="569.8" y2="350.4"/>   <!-- Depr. -->
+    <line x1="439.7" y1="414" x2="634.9" y2="451.1"/>   <!-- RA -->
+  </g>
+  <g font-size="10" fill="#8a3a6c" text-anchor="middle">
+    <text x="467.8" y="379">.91</text>
+    <text x="410.8" y="400">.84</text>
+    <text x="447.8" y="444">.80</text>
+    <text x="499.6" y="411">.81</text>
+    <text x="488.5" y="447">.73</text>
+    <text x="556" y="370">.41</text>
+    <text x="605" y="436">.37</text>
+  </g>
+  <!-- concepts as points -->
+  <g font-size="10" fill="#222222">
+    <circle cx="439.7" cy="414" r="9" fill="#b0588f"/><text x="427.7" y="427" text-anchor="end" font-weight="bold" fill="#8a3a6c">T2D (query)</text>
+    <circle cx="497.4" cy="360" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="504.8" y="358" text-anchor="start">CAD</text>
+    <circle cx="387.9" cy="402" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="387.9" y="391" text-anchor="middle">CKD</text>
+    <circle cx="470.8" cy="456" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="478.2" y="460" text-anchor="start">Obes.</text>
+    <circle cx="549.2" cy="388" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="556.6" y="386" text-anchor="start">MI</text>
+    <circle cx="532.9" cy="448" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="540.3" y="452" text-anchor="start">HF</text>
+    <circle cx="578.8" cy="346" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="586.2" y="344" text-anchor="start">Depr.</text>
+    <circle cx="644.7" cy="453" r="6" fill="#ffffff" stroke="#b0588f" stroke-width="2"/><text x="652.1" y="457" text-anchor="start">RA</text>
+  </g>
+  <!-- the ranked list the embedding returns, graded by B -->
+  <rect x="723" y="345" width="225" height="138" fill="#ffffff" stroke="#666666" stroke-width="1"/>
+  <g font-size="9.5">
+    <rect x="771" y="346" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="346" width="142" height="17" fill="#d5e6f5"/>
+    <text x="731" y="357.5" fill="#222222">CAD</text><text x="777" y="357.5" font-weight="bold" fill="#8a3a6c">.91</text><text x="811" y="357.5" font-weight="bold" fill="#1a5e8f">&#10003; validated edge</text>
+    <rect x="771" y="363" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="363" width="142" height="17" fill="#d5e6f5"/>
+    <text x="731" y="374.5" fill="#222222">CKD</text><text x="777" y="374.5" font-weight="bold" fill="#8a3a6c">.84</text><text x="811" y="374.5" font-weight="bold" fill="#1a5e8f">&#10003; validated edge</text>
+    <rect x="771" y="380" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="380" width="142" height="17" fill="#eeeeee"/>
+    <text x="731" y="391.5" fill="#222222">MI</text><text x="777" y="391.5" font-weight="bold" fill="#8a3a6c">.81</text><text x="811" y="391.5" font-weight="bold" fill="#8a8a8a">&#10007; no validated edge</text>
+    <rect x="771" y="397" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="397" width="142" height="17" fill="#d5e6f5"/>
+    <text x="731" y="408.5" fill="#222222">Obes.</text><text x="777" y="408.5" font-weight="bold" fill="#8a3a6c">.80</text><text x="811" y="408.5" font-weight="bold" fill="#1a5e8f">&#10003; validated edge</text>
+    <rect x="771" y="414" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="414" width="142" height="17" fill="#eeeeee"/>
+    <text x="731" y="425.5" fill="#222222">HF</text><text x="777" y="425.5" font-weight="bold" fill="#8a3a6c">.73</text><text x="811" y="425.5" font-weight="bold" fill="#8a8a8a">&#10007; no validated edge</text>
+    <rect x="771" y="431" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="431" width="142" height="17" fill="#eeeeee"/>
+    <text x="731" y="442.5" fill="#222222">Depr.</text><text x="777" y="442.5" font-weight="bold" fill="#8a3a6c">.41</text><text x="811" y="442.5" font-weight="bold" fill="#8a8a8a">&#10007; no validated edge</text>
+    <rect x="771" y="448" width="34" height="17" fill="#f0d8e6"/>
+    <rect x="805" y="448" width="142" height="17" fill="#eeeeee"/>
+    <text x="731" y="459.5" fill="#222222">RA</text><text x="777" y="459.5" font-weight="bold" fill="#8a3a6c">.37</text><text x="811" y="459.5" font-weight="bold" fill="#8a8a8a">&#10007; no validated edge</text>
+    <text x="835.5" y="477.5" text-anchor="middle" font-weight="bold" fill="#222222">ranked by cosine to T2D, graded by KG</text>
+  </g>
+</svg>

@@ -1,0 +1,182 @@
+// Concept figure for README.md: the evaluation task, not the pipeline.
+// A clinical concept query goes to the embedding model, which returns ranked
+// candidate codes. The clinical knowledge graph says which pairs are truly
+// related (the answer key); matched synthetic controls supply the negatives.
+// Every pair is scored and the ranking is graded per query with AUROC and AUPRC.
+// A worked example sits between the rows: four candidates for the query,
+// ranked by the embedding's score and labelled by the graph (the top of the
+// table in the evaluation-plan figure's "clinical knowledge graph vs embedding"
+// schematic; cosines are schematic, not measured), pointed at by the scoring box.
+//
+// Palette, one tint per role (shared with scripts/render_dag.R): answer key
+// blue #d5e6f5 / #2b7bb9, model under test pink #f0d8e6 / #b0588f, clinical
+// source #eef3f8 / #4a6a8a, results #fdf3e3 / #c9a24d, controls #eeeeee / #8a8a8a.
+//
+// Arrowheads stop 5 pt short of each box: dot lands a head exactly on the node
+// border and there is no edge attribute for a gap, so every node is a plain
+// HTML table with transparent 5 px spacer cells left and right of the tinted
+// box (the head lands on the outer, invisible boundary).
+//
+// Row order: in rankdir=LR dot stacks same-rank nodes by declaration order, and
+// GraphViz versions differ on the direction (2.43 honours ordering=out; 15.x
+// ignores it). Measured on 15.1.1 with this file: the first declared row lands
+// on TOP, so the knowledge-graph row is declared first. After a GraphViz
+// change, check the render: knowledge graph above the query, and the
+// embedding row's arrows still level. Positions: a regex over the SVG's
+// <polygon points>, not the eye.
+//
+// Render: ./concept.sh   (dot -Tsvg, then rsvg-convert PNG at 200 dpi)
+digraph concept {
+  rankdir  = LR;
+  ranksep  = 0.5;
+  nodesep  = 0.4;
+  ordering = out;
+  fontname = "Helvetica,Arial,sans-serif";
+  node [fontname = "Helvetica,Arial,sans-serif", fontsize = 13, shape = plain];
+  edge [fontname = "Helvetica,Arial,sans-serif", fontsize = 11, color = grey30,
+        fontcolor = grey30, arrowsize = 0.8];
+
+  // ---- knowledge-graph row (declared first: on top) -------------------------
+  kg [group = "top", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+      <tr><td height="5" colspan="3"></td></tr>
+      <tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#d5e6f5" color="#2b7bb9">
+        <tr><td width="208" align="center"><b>Clinical knowledge graph (KG)</b><br/><font point-size="11" color="#1a5e8f">diagnosis&#8211;diagnosis edges</font></td></tr>
+      </table></td>
+      <td width="5"></td>
+      </tr>
+      <tr><td height="5" colspan="3"></td></tr>
+    </table>>];
+  truth [group = "top", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#d5e6f5" color="#2b7bb9">
+        <tr><td width="208" align="center"><b>True pairs for the query</b><br/><font point-size="11" color="#1a5e8f">its neighbours in the graph</font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+  controls [group = "top", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#eeeeee" color="#8a8a8a">
+        <tr><td width="208" align="center"><b>Synthetic controls</b><br/><font point-size="11" color="#555555">four synthetic control methods</font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+
+  // ---- embedding row (declared second: below) ------------------------------
+  query [group = "bottom", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#eef3f8" color="#4a6a8a">
+        <tr><td width="208" align="center"><b>Clinical concept query</b><br/><font point-size="11" color="#2c4864"><i>&#8220;type 2 diabetes&#8221;</i></font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+  model [group = "bottom", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#f0d8e6" color="#b0588f">
+        <tr><td width="208" align="center"><b>Embedding model</b><br/><font point-size="11" color="#8a3a6c">converts text to numeric vectors</font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+  ranked [group = "bottom", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#f0d8e6" color="#b0588f">
+        <tr><td width="208" align="center"><b>Ranked candidate codes</b><br/><font point-size="11" color="#8a3a6c">ICD codes mapped to phecodes</font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+
+  // ---- worked example: the scored, labelled list for one query -----------------
+  // Columns: candidate (plain), score (model tint), verdict (answer-key blue for
+  // a true pair, control grey for a synthetic control); the caption row is split
+  // the same way, the embedding's two columns pink and the KG's column blue.
+  // Outer table: transparent 5 px columns either side, so the arrowhead from
+  // the scoring box stops 5 pt short of the border and the node's centre stays
+  // on the visible table. Square corners and the border drawn by the edge cells (border="1"
+  // sides=...), as in the plan figure's table: a rounded HTML table lets the
+  // row fills spill past the curve and a table-level border leaves a half-pixel
+  // white ring. Bordered cells carry cellpadding 4 (the border insets them by 1)
+  // so every row keeps the height of the padding-5 cells.
+  example [fontsize = 11, label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="0" cellborder="0" cellspacing="0" cellpadding="5" color="grey40">
+      <tr><td align="left" bgcolor="white" border="1" sides="lt" cellpadding="4">coronary artery disease</td><td bgcolor="#f0d8e6" align="center" border="1" sides="t" cellpadding="4"><font color="#8a3a6c"><b>.91</b></font></td><td bgcolor="#d5e6f5" align="left" border="1" sides="tr" cellpadding="4"><font color="#1a5e8f"><b>&#10003; true pair</b></font></td></tr>
+      <tr><td align="left" bgcolor="white" border="1" sides="l" cellpadding="4">chronic kidney disease</td><td bgcolor="#f0d8e6" align="center"><font color="#8a3a6c"><b>.84</b></font></td><td bgcolor="#d5e6f5" align="left" border="1" sides="r" cellpadding="4"><font color="#1a5e8f"><b>&#10003; true pair</b></font></td></tr>
+      <tr><td align="left" bgcolor="white" border="1" sides="l" cellpadding="4">myocardial infarction</td><td bgcolor="#f0d8e6" align="center"><font color="#8a3a6c"><b>.81</b></font></td><td bgcolor="#eeeeee" align="left" border="1" sides="r" cellpadding="4"><font color="#8a8a8a"><b>&#10007; synthetic control</b></font></td></tr>
+      <tr><td align="left" bgcolor="white" border="1" sides="l" cellpadding="4">obesity</td><td bgcolor="#f0d8e6" align="center"><font color="#8a3a6c"><b>.80</b></font></td><td bgcolor="#d5e6f5" align="left" border="1" sides="r" cellpadding="4"><font color="#1a5e8f"><b>&#10003; true pair</b></font></td></tr>
+      <tr><td align="left" bgcolor="white" border="1" sides="l" cellpadding="4"><font color="#8a8a8a">&#8942;</font></td><td bgcolor="#f0d8e6" align="center"><font color="#8a3a6c">&#8942;</font></td><td bgcolor="white" align="left" border="1" sides="r" cellpadding="4"><font color="#8a8a8a">&#8942;</font></td></tr>
+      <tr><td colspan="2" align="center" bgcolor="#f0d8e6" border="1" sides="lb" cellpadding="4"><b>ranked by the embedding</b></td><td align="center" bgcolor="#d5e6f5" border="1" sides="br" cellpadding="4"><font color="#1a5e8f"><b>graded by KG</b></font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+
+  // ---- the test ---------------------------------------------------------------
+  score [group = "mid", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0">
+      <tr><td height="5" colspan="3"></td></tr>
+      <tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#fdf3e3" color="#c9a24d">
+        <tr><td width="208" height="36" align="center"><b>Score every pair</b></td></tr>
+      </table></td>
+      <td width="5"></td>
+      </tr>
+      <tr><td height="5" colspan="3"></td></tr>
+    </table>>];
+  metrics [group = "mid", label = <
+    <table border="0" cellborder="0" cellspacing="0" cellpadding="0"><tr>
+      <td width="5"></td>
+      <td><table border="1" cellborder="0" cellspacing="0" cellpadding="6" style="rounded" bgcolor="#fdf3e3" color="#c9a24d">
+        <tr><td width="208" align="center"><b>Operating characteristics</b><br/><font point-size="11" color="#5a4a1e">AUROC, AUPRC, PPV, Recall@K, etc.</font></td></tr>
+      </table></td>
+      <td width="5"></td>
+    </tr></table>>];
+
+  // ---- flow -------------------------------------------------------------------
+  // group = keeps each row on one straight line (dot straightens edges within a
+  // group); without it the labelled truth -> controls edge lifts the controls box.
+  // The scoring box shares the third column with the controls and the ranked
+  // codes (owner, 2026-09-04) and sits between them. dot puts a flat edge's
+  // tail above its head in LR, so controls -> score keeps the controls on top
+  // and the ranked edge is drawn tail-first with dir=back (score above ranked,
+  // arrowhead still on the score box). A flat edge's `label` lands in the rank
+  // to the left of the column and an xlabel is centred on the line, so these
+  // two are taillabels pushed off the arrow. Measured on 15.1.1: labelangle = 90
+  // lands level with the tail on the RIGHT of a downward edge, so -39 with
+  // labeldistance 6.4 (units of 10 pt) puts the label's centre 40 pt left of the
+  // line and 50 pt down it, about halfway along the ~105 pt segments the
+  // worked example opened up between the rows.
+  { rank = same; controls; score; ranked; }
+  query -> model -> ranked;
+  // The same question goes to the answer key (owner, 2026-09-04): a flat edge
+  // up the first column, drawn tail-first with dir=back so the graph stays on
+  // top and the arrowhead still lands on it (5 px spacer row on the kg box).
+  // rank=same keeps the query in the first column; without it dot reads the
+  // edge as kg -> query and moves the query one column right.
+  { rank = same; kg; query; }
+  kg -> query [dir = back];
+  kg -> truth;
+  truth -> controls [label = "sampled outside\nthe true pairs"];
+  controls -> score [taillabel = "negatives", labelangle = -39, labeldistance = 6.4];
+  score -> ranked   [dir = back, taillabel = "scores", labelangle = -39, labeldistance = 6.4];
+  truth    -> score [label = "positives"];
+  // The example shares the second column with the true pairs (above) and the
+  // model (below); invisible flat edges pin that order (tail above head).
+  { rank = same; truth; example; model; }
+  truth -> example -> model [style = invis];
+  // The arrow points at the table (owner, 2026-09-04): it shows what scoring
+  // produces. Drawn example -> score with dir=back so the example keeps its
+  // column (a score -> example edge would be a back edge). weight: the
+  // labelled truth -> score edge otherwise pulls the scoring box up; the
+  // example sits at the midpoint between the rows, so a heavy, level edge
+  // keeps the scoring box centred between controls and ranked.
+  example -> score [dir = back, weight = 10];
+  score -> metrics;
+}
