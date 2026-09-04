@@ -8,9 +8,10 @@
  viewBox="0.00 0.00 1575.00 483.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 479)">
 <title>pipeline_dag</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-479 1570.5,-479 1570.5,4 -4,4"/>
 <g id="clust1" class="cluster">
 <title>cluster_legend</title>
-<path fill="none" stroke="#bbbbbb" d="M20,-397C20,-397 819.75,-397 819.75,-397 825.75,-397 831.75,-403 831.75,-409 831.75,-409 831.75,-455 831.75,-455 831.75,-461 825.75,-467 819.75,-467 819.75,-467 20,-467 20,-467 14,-467 8,-461 8,-455 8,-455 8,-409 8,-409 8,-403 14,-397 20,-397"/>
+<path fill="white" stroke="#bbbbbb" d="M20,-397C20,-397 819.75,-397 819.75,-397 825.75,-397 831.75,-403 831.75,-409 831.75,-409 831.75,-455 831.75,-455 831.75,-461 825.75,-467 819.75,-467 819.75,-467 20,-467 20,-467 14,-467 8,-461 8,-455 8,-455 8,-409 8,-409 8,-403 14,-397 20,-397"/>
 <text xml:space="preserve" text-anchor="middle" x="419.88" y="-453.98" font-family="Helvetica,Arial,sans-serif" font-size="9.50">legend (file shape = a tracked file)</text>
 </g>
 <!-- audit_results -->
