@@ -4,13 +4,14 @@
 # "fresh clone" mode documented in scripts/simulate_data.R (--out data),
 # which needs no bash/symlinks/make and therefore also runs on Windows.
 #
-# RENV_CONFIG_REPOS_OVERRIDE pins the DATED PPM snapshot 2026-06-02 (the day
-# after renv.lock was written), where every pinned version was CRAN-current —
-# so mac/windows/linux all get prebuilt binaries. The lockfile's own
-# "latest" URL drifts: mac/windows binaries exist only for current CRAN
-# versions, so pinned-but-superseded packages (e.g. data.table) fall back to
-# source builds that fail on the runners. Linux additionally needs the
-# __linux__/noble path for binaries at all.
+# RENV_CONFIG_REPOS_OVERRIDE pins the DATED PPM snapshot 2026-09-03, the one
+# renv.lock was refreshed against (2026-09-04): every pinned version is current
+# there, so mac/windows/linux all get prebuilt binaries. A moving "latest" URL
+# would drift: mac/windows binaries exist only for current CRAN versions, so
+# pinned-but-superseded packages (e.g. data.table) fall back to source builds
+# that fail on the runners. Linux additionally needs the __linux__/noble path
+# for binaries at all. Bump this date and re-snapshot together (.Rprofile
+# carries the same date).
 name: smoke
 
 on:
@@ -28,11 +29,11 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            repos: https://packagemanager.posit.co/cran/__linux__/noble/2026-06-02
+            repos: https://packagemanager.posit.co/cran/__linux__/noble/2026-09-03
           - os: macos-latest
-            repos: https://packagemanager.posit.co/cran/2026-06-02
+            repos: https://packagemanager.posit.co/cran/2026-09-03
           - os: windows-latest
-            repos: https://packagemanager.posit.co/cran/2026-06-02
+            repos: https://packagemanager.posit.co/cran/2026-09-03
     env:
       RENV_CONFIG_REPOS_OVERRIDE: ${{ matrix.repos }}
     defaults:
@@ -42,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.6.0"
+          r-version: "4.6.1"
       - uses: r-lib/actions/setup-renv@v2
       - name: simulate (phecode-null, fresh-clone mode)
         run: Rscript scripts/simulate_data.R --preset phecode-null --out data --force
