@@ -16,3 +16,5 @@ renv/cellar/
 .Rhistory
 .RData
 .DS_Store
+
+NEXT_SESSION.md

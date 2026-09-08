@@ -30,6 +30,8 @@ Presets (`make simulate SIM_PRESET=...`):
 | `phecode-oracle` | deterministic threshold rule, noiseless retriever | AUROC = 1 (calibration) |
 | `phecode-xu` | log-linear model via simulated patient sequences (Xu et al. 2026) | realistic; ~3 min |
 
+`make smoke` runs the two calibration presets (`phecode-null`, `phecode-oracle`) through the pipeline end to end.
+
 ## Pipeline
 
 ![The evaluation workflow: the query goes to the knowledge graph, which yields its true pairs, and to the embedding model, which ranks candidate codes; synthetic controls are sampled outside the true pairs; every pair is scored, giving a list ranked by the embedding and graded by the graph, and overall embedding performance measured by operating characteristics](docs/figures/concept.svg)
